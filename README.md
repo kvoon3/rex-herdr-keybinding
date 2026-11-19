@@ -77,15 +77,13 @@ Reinstalling keeps the prefix already in the file.
 | Global | `s` | settings | `client.settings` | ✅ |
 | Global | `shift+r` | reload config | `client.config.reload` | ✅ |
 | Global | `b` | toggle sidebar | `client.sidebar.toggle` | ✅ |
-| Global | `?` | help panel | `herdr_keybindings` | ✅ |
+| Global | `?` | help panel | none, Rex shows the next keys after a prefix | ❌ |
 | Global | `q` | detach | `client.visibility.toggle` | 🔶 |
 | Global | `o` | notification jump | none | ❌ |
 | Workspace | `shift+g` | new worktree | none | ❌ |
 | Pane | `e` | edit scrollback | none | ❌ |
 | Pane | navigate mode `up` / `down` | move across workspaces | none | ❌ |
 | Global | `ctrl+alt+*` | prefix-free chords | none | ❌ |
-
-`?` opens a floating table of these bindings. Press `q` to close it.
 
 Adapted keys, in detail:
 
@@ -122,7 +120,7 @@ dofile("/absolute/path/to/herdr-keybindings.lua").setup({
 ## Verify
 
 ```sh
-rex config check      # expect 50 bindings and 1 mode, plus 2 removals with rex_defaults
+rex config check      # expect 49 bindings and 1 mode, plus 2 removals with rex_defaults
 rex config reload
 rex keymap
 ```
