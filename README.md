@@ -1,6 +1,6 @@
 # rex-herdr-keybinding
 
-Bring [Herdr](https://herdr.dev) `prefix+?` keymap to [Rex](https://www.superlogical.com/rex/docs/installation)
+Use [Herdr](https://herdr.dev) `prefix+?` keymap in [Rex](https://www.superlogical.com/rex/docs/installation)
 
 ## Install
 
@@ -77,7 +77,7 @@ Reinstalling keeps the prefix already in the file.
 | Global | `s` | settings | `client.settings` | ✅ |
 | Global | `shift+r` | reload config | `client.config.reload` | ✅ |
 | Global | `b` | toggle sidebar | `client.sidebar.toggle` | ✅ |
-| Global | `?` | help panel | `client.palette.toggle` | 🔶 |
+| Global | `?` | help panel | `herdr_keybindings` | ✅ |
 | Global | `q` | detach | `client.visibility.toggle` | 🔶 |
 | Global | `o` | notification jump | none | ❌ |
 | Workspace | `shift+g` | new worktree | none | ❌ |
@@ -85,11 +85,12 @@ Reinstalling keeps the prefix already in the file.
 | Pane | navigate mode `up` / `down` | move across workspaces | none | ❌ |
 | Global | `ctrl+alt+*` | prefix-free chords | none | ❌ |
 
+`?` opens a floating table of these bindings. Press `q` to close it.
+
 Adapted keys, in detail:
 
 - `shift+h` `shift+j` `shift+k` `shift+l` move a pane in that direction. herdr swaps it with its neighbour. Both agree in simple layouts and can differ in nested ones.
 - `[` opens Rex find. Rex has no copy mode, and its native scroll and selection cover the same ground.
-- `?` opens the command palette. Rex has no keybinding help panel.
 - `q` hides the window. Rex has no detach, so running programs stay attached to the app.
 
 ## Additional
