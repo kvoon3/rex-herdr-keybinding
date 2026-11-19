@@ -95,32 +95,30 @@ Adapted keys, in detail:
 - `q` hides the window. Rex has no detach, so running programs stay attached to the app.
 - `t` opens a floating pane. The herdr side is a popup terminal.
 
-## Rex only
+## Additional
 
 These put Rex's own app shortcuts behind the prefix.
 
-| Rex key | Rex shortcut | Rex action |
-| --- | --- | --- |
-| `space` | `cmd+p` | `pane.go_to` |
-| `shift+space` | `shift+cmd+p` | `client.palette.toggle` |
+| Key | Action |
+| --- | --- |
+| `space` | `pane.go_to`, replacing `cmd+p` |
+| `shift+space` | `client.palette.toggle`, replacing `shift+cmd+p` |
 
 The app shortcuts keep working unless you unset them. See [Unset default keys](#unset-default-keys).
 
 ## Unset default keys
 
-`unset` removes Rex app shortcuts so the prefix form is the only way to run them.
-
-| `unset` value | Removes |
-| --- | --- |
-| `"rex_defaults"` | `cmd+p` and `shift+cmd+p`, the shortcuts the Rex only keys take over |
-| `{ "cmd+r" }` | Exactly the keys listed |
-
 ```lua
-dofile("/absolute/path/to/herdr-keybindings.lua").setup({ unset = "rex_defaults" })
-dofile("/absolute/path/to/herdr-keybindings.lua").setup({ unset = { "cmd+r" } })
-```
+dofile("/absolute/path/to/herdr-keybindings.lua").setup({
+  unset = "rex_defaults"
+})
 
-Any other value stops the configuration from loading with `unset must be "rex_defaults" or a list of keys`. Reinstall keeps the `unset` you set.
+-- or 
+
+dofile("/absolute/path/to/herdr-keybindings.lua").setup({
+  unset = { "cmd+r" }
+})
+```
 
 ## Verify
 
