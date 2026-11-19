@@ -9,9 +9,11 @@ curl -fsSL https://raw.githubusercontent.com/kvoon3/rex-herdr-keybinding/main/in
 rex config check && rex config reload
 ```
 
-The script writes the keymap into `~/.config/rex/init.lua` inside a marked block, backs the file up to `init.lua.bak`, and is safe to re-run. Set `REX_CONFIG` to target a different file.
+The script installs `herdr-keybindings.lua` into `~/.config/rex/plugins/rex-herdr-keybinding` and adds a `dofile` line to `~/.config/rex/init.lua` inside a marked block, the way the `leaf` plugin loads. It backs the config up to `init.lua.bak` and produces the same file on every rerun. Set `REX_CONFIG` or `REX_PLUGIN_DIR` to change the two targets.
 
-Manual install: copy `herdr-keybindings.lua` into `init.lua`, or load it with `dofile`. Keep any plugin-managed block where it is.
+To remove it, delete the marked block and the install directory.
+
+Manual install: put `herdr-keybindings.lua` anywhere and add `dofile("/absolute/path/to/herdr-keybindings.lua")` to `init.lua`.
 
 ## Keymap
 

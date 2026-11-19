@@ -3,25 +3,26 @@ set -eu
 
 repo="https://raw.githubusercontent.com/kvoon3/rex-herdr-keybinding/main"
 config="${REX_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/rex/init.lua}"
+dir="${REX_PLUGIN_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/rex/plugins/rex-herdr-keybinding}"
 start="-- >>> rex-herdr-keybinding >>>"
 end="-- <<< rex-herdr-keybinding <<<"
 
 src=""
 if [ -f "${0:-}" ]; then
-  dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-  if [ -f "$dir/herdr-keybindings.lua" ]; then
-    src="$dir/herdr-keybindings.lua"
+  here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+  if [ -f "$here/herdr-keybindings.lua" ]; then
+    src="$here/herdr-keybindings.lua"
   fi
 fi
 
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 
+mkdir -p "$dir"
 if [ -n "$src" ]; then
-  keymap="$src"
+  cp "$src" "$dir/herdr-keybindings.lua"
 else
-  keymap="$tmp/herdr-keybindings.lua"
-  curl -fsSL "$repo/herdr-keybindings.lua" -o "$keymap"
+  curl -fsSL "$repo/herdr-keybindings.lua" -o "$dir/herdr-keybindings.lua"
 fi
 
 mkdir -p "$(dirname -- "$config")"
@@ -45,12 +46,14 @@ awk '
 
 {
   printf '\n%s\n' "$start"
-  cat "$keymap"
+  printf '%s\n' "-- Managed by the rex-herdr-keybinding installer. Delete this block and $dir to remove."
+  printf 'dofile("%s/herdr-keybindings.lua")\n' "$dir"
   printf '%s\n' "$end"
 } >> "$tmp/init.lua"
 
 mv "$tmp/init.lua" "$config"
 
-printf 'Installed herdr keybindings into %s\n' "$config"
+printf 'Keymap written to %s/herdr-keybindings.lua\n' "$dir"
+printf 'Loaded from %s\n' "$config"
 printf 'Backup written to %s.bak\n' "$config"
 printf 'Next: rex config check && rex config reload\n'
