@@ -18,7 +18,7 @@ dofile("/absolute/path/to/herdr-keybindings.lua").setup({ prefix = "ctrl+b" })
 ## Usage
 
 ```text
-Usage: rex-herdr-keybinding [--prefix KEY] [COMMAND]
+Usage: rex-herdr-keybinding [COMMAND]
 
 Commands:
   install     Install the keymap and enable it (default)
@@ -27,18 +27,22 @@ Commands:
   disable     Stop loading it, keeping the installed files
   help        Show this message
 
-Options:
-  --prefix KEY    Prefix key, default ctrl+b
-
 Environment:
-  REX_CONFIG              Config file, default $HOME/.config/rex/init.lua
-  REX_PLUGIN_DIR          Install directory, default $HOME/.config/rex/plugins/rex-herdr-keybinding
-  REX_HERDR_KEYBINDING_PREFIX  Prefix key, same as --prefix
+  REX_CONFIG      Config file, default $HOME/.config/rex/init.lua
+  REX_PLUGIN_DIR  Install directory, default $HOME/.config/rex/plugins/rex-herdr-keybinding
+
+Change the prefix in the generated line: setup({ prefix = "ctrl+a" }).
 ```
 
 ## Keymap
 
-Default prefix: `ctrl+b`. Change it with `--prefix ctrl+a` at install time, with `REX_HERDR_KEYBINDING_PREFIX=ctrl+a`, or with `setup({ prefix = "ctrl+a" })` when loading the file yourself.
+Default prefix: `ctrl+b`. Change it by editing the `setup` call in `init.lua`:
+
+```lua
+dofile("/absolute/path/to/herdr-keybindings.lua").setup({ prefix = "ctrl+a" })
+```
+
+Reinstalling keeps the prefix already in the file.
 
 - ✅ same
 - 🔶 adapted 
