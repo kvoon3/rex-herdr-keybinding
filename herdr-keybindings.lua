@@ -84,6 +84,10 @@ local function current_dir(block_id)
   local path = result.pwd
   if path:sub(1, 7) == "file://" then
     path = path:sub(8)
+    local slash = path:find("/", 1, true)
+    if slash ~= nil then
+      path = path:sub(slash)
+    end
     path = path:gsub("%%(%x%x)", function(hex)
       return string.char(tonumber(hex, 16))
     end)
