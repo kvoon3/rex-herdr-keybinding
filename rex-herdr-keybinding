@@ -10,8 +10,10 @@ tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 
 prefix=""
+existing=""
 if [ -f "$config" ]; then
   prefix=$(sed -n 's/.*setup({[[:space:]]*prefix[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' "$config" | head -n 1)
+  existing=$(grep -F -e "herdr-keybindings.lua" "$config" | head -n 1)
 fi
 prefix="${prefix:-ctrl+b}"
 
@@ -72,7 +74,11 @@ save() {
 
 enable_cmd() {
   render > "$tmp/init.lua"
-  printf '\ndofile("%s").setup({ prefix = "%s" })\n' "$file" "$prefix" >> "$tmp/init.lua"
+  if [ -n "$existing" ] && printf '%s' "$existing" | grep -qF -e "$file"; then
+    printf '\n%s\n' "$existing" >> "$tmp/init.lua"
+  else
+    printf '\ndofile("%s").setup({ prefix = "%s" })\n' "$file" "$prefix" >> "$tmp/init.lua"
+  fi
   save
   printf 'Next: rex config check && rex config reload\n'
 }
