@@ -97,9 +97,9 @@ Keys that are not in herdr's default set.
 
 | Key | Action |
 | --- | --- |
-| `space` | `pane.go_to`, replacing `cmd+p` |
-| `shift+space` | `client.palette.toggle`, replacing `shift+cmd+p` |
-| `t` | `pane.new_floating`, from my own herdr config |
+| `space` | `pane.go_to` |
+| `shift+space` | `client.palette.toggle` |
+| `t` | `pane.new_floating` |
 
 The app shortcuts keep working unless you unset them. See [Unset default keys](#unset-default-keys).
 
