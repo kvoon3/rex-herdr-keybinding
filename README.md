@@ -5,9 +5,11 @@ herdr's `ctrl+b` keymap for Rex, plus a mapping table.
 ## Install
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/kvoon3/rex-herdr-keybinding/main/rex-herdr-keybinding | sh -s -- install
+curl -fsSL https://raw.githubusercontent.com/kvoon3/rex-herdr-keybinding/main/rex-herdr-keybinding | sh
 rex config check && rex config reload
 ```
+
+Bare invocation installs. Pass a command to change that: `sh -s -- disable`.
 
 | Command | Effect |
 | --- | --- |

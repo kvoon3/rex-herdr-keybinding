@@ -11,10 +11,10 @@ trap 'rm -rf "$tmp"' EXIT
 
 usage() {
   cat <<EOF
-Usage: rex-herdr-keybinding COMMAND
+Usage: rex-herdr-keybinding [COMMAND]
 
 Commands:
-  install     Install the keymap and enable it
+  install     Install the keymap and enable it (default)
   uninstall   Disable it and remove the installed files
   enable      Load the installed keymap from the config
   disable     Stop loading it, keeping the installed files
@@ -82,7 +82,7 @@ disable() {
   printf 'Next: rex config check && rex config reload\n'
 }
 
-case "${1:-}" in
+case "${1:-install}" in
   install|enable)
     enable
     ;;
@@ -96,7 +96,7 @@ case "${1:-}" in
   disable)
     disable
     ;;
-  ""|-h|--help|help)
+  -h|--help|help)
     usage
     ;;
   *)
