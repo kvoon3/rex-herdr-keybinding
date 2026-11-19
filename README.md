@@ -44,10 +44,9 @@ dofile("/absolute/path/to/herdr-keybindings.lua").setup({ prefix = "ctrl+a" })
 
 Reinstalling keeps the prefix already in the file.
 
-- ✅ same
-- 🔶 adapted 
-- ➕ Rex only
-- ❌ not ported
+- ✅ same. Rex does the same thing on the same key.
+- 🔶 adapted. The key is kept, but Rex has no exact equivalent, so it does the closest thing. The differences are listed below the table.
+- ❌ not supported. Rex has no equivalent action, so the key does nothing here.
 
 | Area | herdr key | herdr action | Rex action | Status |
 | --- | --- | --- | --- | --- |
@@ -79,7 +78,6 @@ Reinstalling keeps the prefix already in the file.
 | Global | `?` | help panel | `client.palette.toggle` | 🔶 |
 | Global | `q` | detach | `client.visibility.toggle` | 🔶 |
 | Custom | `t` | floating terminal | `pane.new_floating` | 🔶 |
-| Rex | `prefix` | send the prefix through | `pane.send_key` | ➕ |
 | Global | `o` | notification jump | none | ❌ |
 | Workspace | `shift+g` | new worktree | none | ❌ |
 | Pane | `e` | edit scrollback | none | ❌ |
@@ -90,7 +88,13 @@ Reinstalling keeps the prefix already in the file.
 | Custom | `}` | hunk diff | none | ❌ |
 | Custom | `u` | usage plugin | none | ❌ |
 
-`pane.move` moves a pane in a direction where herdr swaps it with its neighbour. The two agree in simple layouts and can differ in nested ones.
+Adapted keys, in detail:
+
+- `shift+h` `shift+j` `shift+k` `shift+l` move a pane in that direction. herdr swaps it with its neighbour. Both agree in simple layouts and can differ in nested ones.
+- `[` opens Rex find. Rex has no copy mode, and its native scroll and selection cover the same ground.
+- `?` opens the command palette. Rex has no keybinding help panel.
+- `q` hides the window. Rex has no detach, so running programs stay attached to the app.
+- `t` opens a floating pane. The herdr side is a popup terminal.
 
 ## Verify
 
