@@ -1,0 +1,117 @@
+#!/bin/sh
+set -eu
+
+repo="https://raw.githubusercontent.com/kvoon3/rex-herdr-keybinding/main"
+config="${REX_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/rex/init.lua}"
+dir="${REX_PLUGIN_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/rex/plugins/rex-herdr-keybinding}"
+file="$dir/herdr-keybindings.lua"
+start="-- >>> rex-herdr-keybinding >>>"
+end="-- <<< rex-herdr-keybinding <<<"
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+usage() {
+  cat <<EOF
+Usage: rex-herdr-keybinding COMMAND
+
+Commands:
+  install     Install the keymap and enable it
+  uninstall   Disable it and remove the installed files
+  enable      Load the installed keymap from the config
+  disable     Stop loading it, keeping the installed files
+
+Environment:
+  REX_CONFIG      Config file, default \$HOME/.config/rex/init.lua
+  REX_PLUGIN_DIR  Install directory, default \$HOME/.config/rex/plugins/rex-herdr-keybinding
+EOF
+}
+
+fetch() {
+  mkdir -p "$dir"
+  if [ -f "${0:-}" ]; then
+    here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+    if [ -f "$here/herdr-keybindings.lua" ]; then
+      cp "$here/herdr-keybindings.lua" "$file"
+      return
+    fi
+  fi
+  curl -fsSL "$repo/herdr-keybindings.lua" -o "$file"
+}
+
+strip() {
+  awk -v s="$start" -v e="$end" '
+    $0 == s { skip = 1; next }
+    $0 == e { skip = 0; next }
+    skip != 1 { print }
+  ' "$config" > "$tmp/stripped.lua"
+  awk '
+    { line[NR] = $0 }
+    END {
+      last = NR
+      while (last > 0 && line[last] ~ /^[[:space:]]*$/) last--
+      for (i = 1; i <= last; i++) print line[i]
+    }
+  ' "$tmp/stripped.lua" > "$tmp/init.lua"
+}
+
+commit() {
+  mkdir -p "$(dirname -- "$config")"
+  cp "$config" "$config.bak"
+  mv "$tmp/init.lua" "$config"
+  printf 'Wrote %s (backup at %s.bak)\n' "$config" "$config"
+}
+
+enable() {
+  if [ ! -f "$file" ]; then
+    fetch
+    printf 'Installed %s\n' "$file"
+  fi
+  [ -f "$config" ] || : > "$config"
+  strip
+  {
+    printf '\n%s\n' "$start"
+    printf '%s\n' "-- Managed by the rex-herdr-keybinding CLI. Run rex-herdr-keybinding disable or uninstall to remove."
+    printf 'dofile("%s")\n' "$file"
+    printf '%s\n' "$end"
+  } >> "$tmp/init.lua"
+  commit
+  printf 'Next: rex config check && rex config reload\n'
+}
+
+disable() {
+  if [ ! -f "$config" ] || ! grep -qF -e "$start" "$config"; then
+    printf 'Already disabled in %s\n' "$config"
+    return
+  fi
+  strip
+  commit
+  printf 'Next: rex config check && rex config reload\n'
+}
+
+case "${1:-}" in
+  install)
+    enable
+    ;;
+  uninstall)
+    disable
+    if [ -d "$dir" ]; then
+      rm -rf "$dir"
+      printf 'Removed %s\n' "$dir"
+    fi
+    ;;
+  enable)
+    enable
+    ;;
+  disable)
+    disable
+    ;;
+  ""|-h|--help|help)
+    usage
+    ;;
+  *)
+    printf 'Unknown command: %s\n\n' "$1" >&2
+    usage >&2
+    exit 2
+    ;;
+esac

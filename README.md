@@ -5,13 +5,18 @@ herdr's `ctrl+b` keymap for Rex, plus a mapping table.
 ## Install
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/kvoon3/rex-herdr-keybinding/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/kvoon3/rex-herdr-keybinding/main/rex-herdr-keybinding | sh -s -- install
 rex config check && rex config reload
 ```
 
-The script installs `herdr-keybindings.lua` into `~/.config/rex/plugins/rex-herdr-keybinding` and adds a `dofile` line to `~/.config/rex/init.lua` inside a marked block, the way the `leaf` plugin loads. It backs the config up to `init.lua.bak` and produces the same file on every rerun. Set `REX_CONFIG` or `REX_PLUGIN_DIR` to change the two targets.
+| Command | Effect |
+| --- | --- |
+| `install` | Copy the keymap to the plugin directory and enable it |
+| `enable` | Add the `dofile` line to the config |
+| `disable` | Remove the `dofile` line, keeping the files |
+| `uninstall` | Remove the line and the plugin directory |
 
-To remove it, delete the marked block and the install directory.
+The CLI writes `herdr-keybindings.lua` to `~/.config/rex/plugins/rex-herdr-keybinding` and a marked block with a `dofile` line to `~/.config/rex/init.lua`, the way the `leaf` plugin loads. Every run backs the config up to `init.lua.bak` and leaves an identical file. `REX_CONFIG` and `REX_PLUGIN_DIR` change the two targets. From a checkout, run `./rex-herdr-keybinding install`.
 
 Manual install: put `herdr-keybindings.lua` anywhere and add `dofile("/absolute/path/to/herdr-keybindings.lua")` to `init.lua`.
 
