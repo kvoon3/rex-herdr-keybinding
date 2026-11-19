@@ -46,10 +46,10 @@ Reinstalling keeps the prefix already in the file.
 
 | Status | Meaning |
 | --- | --- |
-| ✅ | supported. Rex does the same thing on the same key. |
-| 🔶 | adapted. The key is kept, but Rex has no exact equivalent, so it does the closest thing. Details below the table. |
-| ➕ | Rex only. No herdr counterpart. The key replaces a Rex app shortcut. |
-| ❌ | not supported. Rex has no equivalent action, so the key does nothing here. |
+| ✅ | supported|
+| 🔶 | adapted|
+| ➕ | Rex only|
+| ❌ | not supported|
 
 | Area | herdr key | herdr action | Rex action | Status |
 | --- | --- | --- | --- | --- |
