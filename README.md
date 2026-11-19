@@ -48,7 +48,6 @@ Reinstalling keeps the prefix already in the file.
 | --- | --- |
 | ✅ | supported|
 | 🔶 | adapted|
-| ➕ | Rex only|
 | ❌ | not supported|
 
 | Area | herdr key | herdr action | Rex action | Status |
@@ -80,7 +79,6 @@ Reinstalling keeps the prefix already in the file.
 | Global | `b` | toggle sidebar | `client.sidebar.toggle` | ✅ |
 | Global | `?` | help panel | `client.palette.toggle` | 🔶 |
 | Global | `q` | detach | `client.visibility.toggle` | 🔶 |
-| Custom | `t` | floating terminal | `pane.new_floating` | 🔶 |
 | Global | `o` | notification jump | none | ❌ |
 | Workspace | `shift+g` | new worktree | none | ❌ |
 | Pane | `e` | edit scrollback | none | ❌ |
@@ -93,16 +91,16 @@ Adapted keys, in detail:
 - `[` opens Rex find. Rex has no copy mode, and its native scroll and selection cover the same ground.
 - `?` opens the command palette. Rex has no keybinding help panel.
 - `q` hides the window. Rex has no detach, so running programs stay attached to the app.
-- `t` opens a floating pane. The herdr side is a popup terminal.
 
 ## Additional
 
-These put Rex's own app shortcuts behind the prefix.
+Keys that are not in herdr's default set.
 
 | Key | Action |
 | --- | --- |
 | `space` | `pane.go_to`, replacing `cmd+p` |
 | `shift+space` | `client.palette.toggle`, replacing `shift+cmd+p` |
+| `t` | `pane.new_floating`, from my own herdr config |
 
 The app shortcuts keep working unless you unset them. See [Unset default keys](#unset-default-keys).
 
