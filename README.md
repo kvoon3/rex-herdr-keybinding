@@ -16,7 +16,7 @@ rex config check && rex config reload
 | `disable` | Remove the `dofile` line, keeping the files |
 | `uninstall` | Remove the line and the plugin directory |
 
-The CLI writes `herdr-keybindings.lua` to `~/.config/rex/plugins/rex-herdr-keybinding` and a marked block with a `dofile` line to `~/.config/rex/init.lua`, the way the `leaf` plugin loads. Every run backs the config up to `init.lua.bak` and leaves an identical file. `REX_CONFIG` and `REX_PLUGIN_DIR` change the two targets. From a checkout, run `./rex-herdr-keybinding install`.
+The CLI writes `herdr-keybindings.lua` to `~/.config/rex/plugins/rex-herdr-keybinding` and adds one `dofile` line to `~/.config/rex/init.lua`, the way the `leaf` plugin loads. It backs the config up to `init.lua.bak` when it changes, and reports no change when nothing would differ. `REX_CONFIG` and `REX_PLUGIN_DIR` change the two targets. From a checkout, run `./rex-herdr-keybinding install`.
 
 Manual install: put `herdr-keybindings.lua` anywhere and add `dofile("/absolute/path/to/herdr-keybindings.lua")` to `init.lua`.
 

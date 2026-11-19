@@ -5,8 +5,6 @@ repo="https://raw.githubusercontent.com/kvoon3/rex-herdr-keybinding/main"
 config="${REX_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/rex/init.lua}"
 dir="${REX_PLUGIN_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/rex/plugins/rex-herdr-keybinding}"
 file="$dir/herdr-keybindings.lua"
-start="-- >>> rex-herdr-keybinding >>>"
-end="-- <<< rex-herdr-keybinding <<<"
 
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
@@ -39,27 +37,28 @@ fetch() {
   curl -fsSL "$repo/herdr-keybindings.lua" -o "$file"
 }
 
-strip() {
-  awk -v s="$start" -v e="$end" '
-    $0 == s { skip = 1; next }
-    $0 == e { skip = 0; next }
-    skip != 1 { print }
-  ' "$config" > "$tmp/stripped.lua"
+render() {
+  [ -f "$config" ] || return 0
   awk '
+    /rex-herdr-keybinding|herdr-keybindings\.lua/ { next }
     { line[NR] = $0 }
     END {
       last = NR
       while (last > 0 && line[last] ~ /^[[:space:]]*$/) last--
       for (i = 1; i <= last; i++) print line[i]
     }
-  ' "$tmp/stripped.lua" > "$tmp/init.lua"
+  ' "$config"
 }
 
-commit() {
+save() {
   mkdir -p "$(dirname -- "$config")"
-  cp "$config" "$config.bak"
+  if [ -f "$config" ] && cmp -s "$tmp/init.lua" "$config"; then
+    printf 'No change to %s\n' "$config"
+    return
+  fi
+  [ -f "$config" ] && cp "$config" "$config.bak"
   mv "$tmp/init.lua" "$config"
-  printf 'Wrote %s (backup at %s.bak)\n' "$config" "$config"
+  printf 'Wrote %s\n' "$config"
 }
 
 enable() {
@@ -67,30 +66,24 @@ enable() {
     fetch
     printf 'Installed %s\n' "$file"
   fi
-  [ -f "$config" ] || : > "$config"
-  strip
-  {
-    printf '\n%s\n' "$start"
-    printf '%s\n' "-- Managed by the rex-herdr-keybinding CLI. Run rex-herdr-keybinding disable or uninstall to remove."
-    printf 'dofile("%s")\n' "$file"
-    printf '%s\n' "$end"
-  } >> "$tmp/init.lua"
-  commit
+  render > "$tmp/init.lua"
+  printf '\ndofile("%s")\n' "$file" >> "$tmp/init.lua"
+  save
   printf 'Next: rex config check && rex config reload\n'
 }
 
 disable() {
-  if [ ! -f "$config" ] || ! grep -qF -e "$start" "$config"; then
+  if [ ! -f "$config" ] || ! grep -qF -e "herdr-keybindings.lua" "$config"; then
     printf 'Already disabled in %s\n' "$config"
     return
   fi
-  strip
-  commit
+  render > "$tmp/init.lua"
+  save
   printf 'Next: rex config check && rex config reload\n'
 }
 
 case "${1:-}" in
-  install)
+  install|enable)
     enable
     ;;
   uninstall)
@@ -99,9 +92,6 @@ case "${1:-}" in
       rm -rf "$dir"
       printf 'Removed %s\n' "$dir"
     fi
-    ;;
-  enable)
-    enable
     ;;
   disable)
     disable
