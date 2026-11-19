@@ -15,8 +15,6 @@ Or copy [herdr-keybindings.lua](./herdr-keybindings.lua) into your Rex config di
 dofile("/absolute/path/to/herdr-keybindings.lua").setup({ prefix = "ctrl+b" })
 ```
 
-Releases are tagged. Pin one with `REX_HERDR_KEYBINDING_REF=v0.1.0`.
-
 ## Usage
 
 ```sh
