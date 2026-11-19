@@ -11,12 +11,22 @@ rex config check && rex config reload
 
 Bare invocation installs. Pass a command to change that: `sh -s -- disable`.
 
-| Command | Effect |
-| --- | --- |
-| `install` | Copy the keymap to the plugin directory and enable it |
-| `enable` | Add the `dofile` line to the config |
-| `disable` | Remove the `dofile` line, keeping the files |
-| `uninstall` | Remove the line and the plugin directory |
+## Commands
+
+```text
+Usage: rex-herdr-keybinding [COMMAND]
+
+Commands:
+  install     Install the keymap and enable it (default)
+  uninstall   Disable it and remove the installed files
+  enable      Load the installed keymap from the config
+  disable     Stop loading it, keeping the installed files
+  help        Show this message
+
+Environment:
+  REX_CONFIG      Config file, default $HOME/.config/rex/init.lua
+  REX_PLUGIN_DIR  Install directory, default $HOME/.config/rex/plugins/rex-herdr-keybinding
+```
 
 The CLI writes `herdr-keybindings.lua` to `~/.config/rex/plugins/rex-herdr-keybinding` and adds one `dofile` line to `~/.config/rex/init.lua`, the way the `leaf` plugin loads. It backs the config up to `init.lua.bak` when it changes, and reports no change when nothing would differ. `REX_CONFIG` and `REX_PLUGIN_DIR` change the two targets. From a checkout, run `./rex-herdr-keybinding install`.
 

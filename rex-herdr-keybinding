@@ -18,6 +18,7 @@ Commands:
   uninstall   Disable it and remove the installed files
   enable      Load the installed keymap from the config
   disable     Stop loading it, keeping the installed files
+  help        Show this message
 
 Environment:
   REX_CONFIG      Config file, default \$HOME/.config/rex/init.lua
