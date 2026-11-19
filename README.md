@@ -1,6 +1,6 @@
 # rex-herdr-keybinding
 
-herdr's `ctrl+b` keymap for Rex, plus a mapping table.
+Bring [Herdr](https://herdr.dev) `prefix+?` keymap to [Rex](https://www.superlogical.com/rex/docs/installation)
 
 ## Install
 
@@ -17,7 +17,7 @@ dofile("/absolute/path/to/herdr-keybindings.lua").setup({ prefix = "ctrl+b" })
 
 ## Usage
 
-```text
+```sh
 Usage: rex-herdr-keybinding [COMMAND]
 
 Commands:
