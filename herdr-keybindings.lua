@@ -52,6 +52,11 @@ local keys = {
   { "shift+space", "client.palette.toggle" },
 }
 
+local defaults = {
+  "cmd+p",
+  "shift+cmd+p",
+}
+
 function M.setup(opts)
   opts = opts or {}
   local prefix = opts.prefix or "ctrl+b"
@@ -74,6 +79,16 @@ function M.setup(opts)
   rex.bind(mode .. "/k", "pane.resize", { direction = "up" })
   rex.bind(mode .. "/l", "pane.resize", { direction = "right" })
   rex.bind(mode .. "/enter", "client.mode.exit")
+
+  if opts.unset_defaults then
+    for _, key in ipairs(defaults) do
+      rex.unbind(key)
+    end
+  end
+
+  for _, key in ipairs(opts.unbind or {}) do
+    rex.unbind(key)
+  end
 end
 
 return M

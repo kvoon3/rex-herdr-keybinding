@@ -97,12 +97,21 @@ Adapted keys, in detail:
 
 ## Rex only
 
-These replace Rex's own app shortcuts with the prefix form.
+These put Rex's own app shortcuts behind the prefix.
 
-| Rex key | Replaces | Rex action |
+| Rex key | Rex shortcut | Rex action |
 | --- | --- | --- |
 | `space` | `cmd+p` | `pane.go_to` |
 | `shift+space` | `shift+cmd+p` | `client.palette.toggle` |
+
+The app shortcuts keep working unless `unset_defaults = true` is passed, which removes exactly those two. `unbind` removes other keys.
+
+```lua
+dofile("/absolute/path/to/herdr-keybindings.lua").setup({
+  unset_defaults = true,
+  unbind = { "cmd+r" },
+})
+```
 
 ## Verify
 
