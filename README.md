@@ -15,6 +15,8 @@ Or copy [herdr-keybindings.lua](./herdr-keybindings.lua) into your Rex config di
 dofile("/absolute/path/to/herdr-keybindings.lua").setup({ prefix = "ctrl+b" })
 ```
 
+Releases are tagged. Pin one with `REX_HERDR_KEYBINDING_REF=v0.1.0`.
+
 ## Usage
 
 ```sh
@@ -30,6 +32,7 @@ Commands:
 Environment:
   REX_CONFIG      Config file, default $HOME/.config/rex/init.lua
   REX_PLUGIN_DIR  Install directory, default $HOME/.config/rex/plugins/rex-herdr-keybinding
+  REX_HERDR_KEYBINDING_REF  Git ref to download the keymap from, default main
 
 Change the prefix in the generated line: setup({ prefix = "ctrl+a" }).
 ```

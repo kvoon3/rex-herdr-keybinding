@@ -1,7 +1,8 @@
 #!/bin/sh
 set -eu
 
-repo="https://raw.githubusercontent.com/kvoon3/rex-herdr-keybinding/main"
+ref="${REX_HERDR_KEYBINDING_REF:-main}"
+repo="https://raw.githubusercontent.com/kvoon3/rex-herdr-keybinding/$ref"
 config="${REX_CONFIG:-${XDG_CONFIG_HOME:-$HOME/.config}/rex/init.lua}"
 dir="${REX_PLUGIN_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/rex/plugins/rex-herdr-keybinding}"
 file="$dir/herdr-keybindings.lua"
@@ -31,6 +32,7 @@ Commands:
 Environment:
   REX_CONFIG      Config file, default \$HOME/.config/rex/init.lua
   REX_PLUGIN_DIR  Install directory, default \$HOME/.config/rex/plugins/rex-herdr-keybinding
+  REX_HERDR_KEYBINDING_REF  Git ref to download the keymap from, default main
 
 Change the prefix in the generated line: setup({ prefix = "ctrl+a" }).
 EOF
