@@ -9,12 +9,16 @@ curl -fsSL https://raw.githubusercontent.com/kvoon3/rex-herdr-keybinding/main/re
 rex config check && rex config reload
 ```
 
-Bare invocation installs. Pass a command to change that: `sh -s -- disable`.
+Or copy [herdr-keybindings.lua](./herdr-keybindings.lua) into your Rex config directory and load it from `init.lua`:
 
-## Commands
+```lua
+dofile("/absolute/path/to/herdr-keybindings.lua").setup({ prefix = "ctrl+b" })
+```
+
+## Usage
 
 ```text
-Usage: rex-herdr-keybinding [COMMAND]
+Usage: rex-herdr-keybinding [--prefix KEY] [COMMAND]
 
 Commands:
   install     Install the keymap and enable it (default)
@@ -23,18 +27,23 @@ Commands:
   disable     Stop loading it, keeping the installed files
   help        Show this message
 
+Options:
+  --prefix KEY    Prefix key, default ctrl+b
+
 Environment:
-  REX_CONFIG      Config file, default $HOME/.config/rex/init.lua
-  REX_PLUGIN_DIR  Install directory, default $HOME/.config/rex/plugins/rex-herdr-keybinding
+  REX_CONFIG              Config file, default $HOME/.config/rex/init.lua
+  REX_PLUGIN_DIR          Install directory, default $HOME/.config/rex/plugins/rex-herdr-keybinding
+  REX_HERDR_KEYBINDING_PREFIX  Prefix key, same as --prefix
 ```
-
-The CLI writes `herdr-keybindings.lua` to `~/.config/rex/plugins/rex-herdr-keybinding` and adds one `dofile` line to `~/.config/rex/init.lua`, the way the `leaf` plugin loads. It backs the config up to `init.lua.bak` when it changes, and reports no change when nothing would differ. `REX_CONFIG` and `REX_PLUGIN_DIR` change the two targets. From a checkout, run `./rex-herdr-keybinding install`.
-
-Manual install: put `herdr-keybindings.lua` anywhere and add `dofile("/absolute/path/to/herdr-keybindings.lua")` to `init.lua`.
 
 ## Keymap
 
-✅ same · 🔶 adapted · ➕ Rex only · ❌ not ported. Keys are what you press after the prefix.
+Default prefix: `ctrl+b`. Change it with `--prefix ctrl+a` at install time, with `REX_HERDR_KEYBINDING_PREFIX=ctrl+a`, or with `setup({ prefix = "ctrl+a" })` when loading the file yourself.
+
+- ✅ same
+- 🔶 adapted 
+- ➕ Rex only
+- ❌ not ported
 
 | Area | herdr key | herdr action | Rex action | Status |
 | --- | --- | --- | --- | --- |
@@ -66,11 +75,18 @@ Manual install: put `herdr-keybindings.lua` anywhere and add `dofile("/absolute/
 | Global | `?` | help panel | `client.palette.toggle` | 🔶 |
 | Global | `q` | detach | `client.visibility.toggle` | 🔶 |
 | Custom | `t` | floating terminal | `pane.new_floating` | 🔶 |
-| Rex | `ctrl+b` | send the prefix through | `pane.send_key` | ➕ |
+| Rex | `prefix` | send the prefix through | `pane.send_key` | ➕ |
+| Global | `o` | notification jump | none | ❌ |
+| Workspace | `shift+g` | new worktree | none | ❌ |
+| Pane | `e` | edit scrollback | none | ❌ |
+| Pane | navigate mode `up` / `down` | move across workspaces | none | ❌ |
+| Global | `ctrl+alt+*` | prefix-free chords | none | ❌ |
+| Custom | `space` | herdr palette plugin | none | ❌ |
+| Custom | `]` | lazygit | none | ❌ |
+| Custom | `}` | hunk diff | none | ❌ |
+| Custom | `u` | usage plugin | none | ❌ |
 
 `pane.move` moves a pane in a direction where herdr swaps it with its neighbour. The two agree in simple layouts and can differ in nested ones.
-
-❌ Not ported: notification jump (`o`), new worktree (`shift+g`), scrollback editing (`e`), navigate mode, prefix-free `ctrl+alt` chords, and four herdr plugin commands.
 
 ## Verify
 

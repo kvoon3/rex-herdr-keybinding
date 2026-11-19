@@ -9,9 +9,32 @@ file="$dir/herdr-keybindings.lua"
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 
+prefix="${REX_HERDR_KEYBINDING_PREFIX:-ctrl+b}"
+cmd=""
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --prefix)
+      [ $# -ge 2 ] || { printf 'Missing value for --prefix\n' >&2; exit 2; }
+      prefix="$2"
+      shift 2
+      ;;
+    --prefix=*)
+      prefix="${1#*=}"
+      shift
+      ;;
+    *)
+      cmd="$1"
+      shift
+      ;;
+  esac
+done
+
+cmd="${cmd:-install}"
+
 usage() {
   cat <<EOF
-Usage: rex-herdr-keybinding [COMMAND]
+Usage: rex-herdr-keybinding [--prefix KEY] [COMMAND]
 
 Commands:
   install     Install the keymap and enable it (default)
@@ -20,9 +43,13 @@ Commands:
   disable     Stop loading it, keeping the installed files
   help        Show this message
 
+Options:
+  --prefix KEY    Prefix key, default ctrl+b
+
 Environment:
-  REX_CONFIG      Config file, default \$HOME/.config/rex/init.lua
-  REX_PLUGIN_DIR  Install directory, default \$HOME/.config/rex/plugins/rex-herdr-keybinding
+  REX_CONFIG              Config file, default \$HOME/.config/rex/init.lua
+  REX_PLUGIN_DIR          Install directory, default \$HOME/.config/rex/plugins/rex-herdr-keybinding
+  REX_HERDR_KEYBINDING_PREFIX  Prefix key, same as --prefix
 EOF
 }
 
@@ -62,15 +89,17 @@ save() {
   printf 'Wrote %s\n' "$config"
 }
 
-enable() {
-  if [ ! -f "$file" ]; then
-    fetch
-    printf 'Installed %s\n' "$file"
-  fi
+enable_cmd() {
   render > "$tmp/init.lua"
-  printf '\ndofile("%s")\n' "$file" >> "$tmp/init.lua"
+  printf '\ndofile("%s").setup({ prefix = "%s" })\n' "$file" "$prefix" >> "$tmp/init.lua"
   save
   printf 'Next: rex config check && rex config reload\n'
+}
+
+install_cmd() {
+  fetch
+  printf 'Installed %s\n' "$file"
+  enable_cmd
 }
 
 disable() {
@@ -83,9 +112,16 @@ disable() {
   printf 'Next: rex config check && rex config reload\n'
 }
 
-case "${1:-install}" in
-  install|enable)
-    enable
+case "$cmd" in
+  install)
+    install_cmd
+    ;;
+  enable)
+    if [ ! -f "$file" ]; then
+      fetch
+      printf 'Installed %s\n' "$file"
+    fi
+    enable_cmd
     ;;
   uninstall)
     disable
@@ -101,7 +137,7 @@ case "${1:-install}" in
     usage
     ;;
   *)
-    printf 'Unknown command: %s\n\n' "$1" >&2
+    printf 'Unknown command: %s\n\n' "$cmd" >&2
     usage >&2
     exit 2
     ;;
