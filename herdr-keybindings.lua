@@ -46,6 +46,10 @@ local keys = {
   { "shift+/", "client.palette.toggle" },
   { "t", "pane.new_floating" },
   { "[", "client.find.open" },
+
+  -- rex only, replacing the app's cmd+p and shift+cmd+p
+  { "space", "pane.go_to" },
+  { "shift+space", "client.palette.toggle" },
 }
 
 function M.setup(opts)

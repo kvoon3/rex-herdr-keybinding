@@ -44,9 +44,12 @@ dofile("/absolute/path/to/herdr-keybindings.lua").setup({ prefix = "ctrl+a" })
 
 Reinstalling keeps the prefix already in the file.
 
-- ✅ same. Rex does the same thing on the same key.
-- 🔶 adapted. The key is kept, but Rex has no exact equivalent, so it does the closest thing. The differences are listed below the table.
-- ❌ not supported. Rex has no equivalent action, so the key does nothing here.
+| Status | Meaning |
+| --- | --- |
+| ✅ | supported. Rex does the same thing on the same key. |
+| 🔶 | adapted. The key is kept, but Rex has no exact equivalent, so it does the closest thing. Details below the table. |
+| ➕ | Rex only. No herdr counterpart. The key replaces a Rex app shortcut. |
+| ❌ | not supported. Rex has no equivalent action, so the key does nothing here. |
 
 | Area | herdr key | herdr action | Rex action | Status |
 | --- | --- | --- | --- | --- |
@@ -83,10 +86,6 @@ Reinstalling keeps the prefix already in the file.
 | Pane | `e` | edit scrollback | none | ❌ |
 | Pane | navigate mode `up` / `down` | move across workspaces | none | ❌ |
 | Global | `ctrl+alt+*` | prefix-free chords | none | ❌ |
-| Custom | `space` | herdr palette plugin | none | ❌ |
-| Custom | `]` | lazygit | none | ❌ |
-| Custom | `}` | hunk diff | none | ❌ |
-| Custom | `u` | usage plugin | none | ❌ |
 
 Adapted keys, in detail:
 
@@ -96,10 +95,19 @@ Adapted keys, in detail:
 - `q` hides the window. Rex has no detach, so running programs stay attached to the app.
 - `t` opens a floating pane. The herdr side is a popup terminal.
 
+## Rex only
+
+These replace Rex's own app shortcuts with the prefix form.
+
+| Rex key | Replaces | Rex action |
+| --- | --- | --- |
+| `space` | `cmd+p` | `pane.go_to` |
+| `shift+space` | `shift+cmd+p` | `client.palette.toggle` |
+
 ## Verify
 
 ```sh
-rex config check      # expect 48 bindings and 1 mode
+rex config check      # expect 50 bindings and 1 mode
 rex config reload
 rex keymap
 ```
