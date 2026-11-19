@@ -104,19 +104,28 @@ These put Rex's own app shortcuts behind the prefix.
 | `space` | `cmd+p` | `pane.go_to` |
 | `shift+space` | `shift+cmd+p` | `client.palette.toggle` |
 
-The app shortcuts keep working unless `unset_defaults = true` is passed, which removes exactly those two. `unbind` removes other keys.
+The app shortcuts keep working unless you unset them. See [Unset default keys](#unset-default-keys).
+
+## Unset default keys
+
+`unset` removes Rex app shortcuts so the prefix form is the only way to run them.
+
+| `unset` value | Removes |
+| --- | --- |
+| `"rex_defaults"` | `cmd+p` and `shift+cmd+p`, the shortcuts the Rex only keys take over |
+| `{ "cmd+r" }` | Exactly the keys listed |
 
 ```lua
-dofile("/absolute/path/to/herdr-keybindings.lua").setup({
-  unset_defaults = true,
-  unbind = { "cmd+r" },
-})
+dofile("/absolute/path/to/herdr-keybindings.lua").setup({ unset = "rex_defaults" })
+dofile("/absolute/path/to/herdr-keybindings.lua").setup({ unset = { "cmd+r" } })
 ```
+
+Any other value stops the configuration from loading with `unset must be "rex_defaults" or a list of keys`. Reinstall keeps the `unset` you set.
 
 ## Verify
 
 ```sh
-rex config check      # expect 50 bindings and 1 mode
+rex config check      # expect 50 bindings and 1 mode, plus 2 removals with rex_defaults
 rex config reload
 rex keymap
 ```

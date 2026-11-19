@@ -52,10 +52,27 @@ local keys = {
   { "shift+space", "client.palette.toggle" },
 }
 
-local defaults = {
+local rex_defaults = {
   "cmd+p",
   "shift+cmd+p",
 }
+
+local function unset_keys(unset)
+  if unset == nil then
+    return
+  end
+
+  local keys = unset
+  if unset == "rex_defaults" then
+    keys = rex_defaults
+  elseif type(unset) ~= "table" then
+    error('setup: unset must be "rex_defaults" or a list of keys', 3)
+  end
+
+  for _, key in ipairs(keys) do
+    rex.unbind(key)
+  end
+end
 
 function M.setup(opts)
   opts = opts or {}
@@ -80,15 +97,7 @@ function M.setup(opts)
   rex.bind(mode .. "/l", "pane.resize", { direction = "right" })
   rex.bind(mode .. "/enter", "client.mode.exit")
 
-  if opts.unset_defaults then
-    for _, key in ipairs(defaults) do
-      rex.unbind(key)
-    end
-  end
-
-  for _, key in ipairs(opts.unbind or {}) do
-    rex.unbind(key)
-  end
+  unset_keys(opts.unset)
 end
 
 return M
