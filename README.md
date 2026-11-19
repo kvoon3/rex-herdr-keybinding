@@ -100,6 +100,7 @@ Keys that are not in herdr's default set.
 | `space` | `pane.go_to` |
 | `shift+space` | `client.palette.toggle` |
 | `t` | `pane.new_floating` |
+| `]` | `rex_lazygit` |
 
 The app shortcuts keep working unless you unset them. See [Unset default keys](#unset-default-keys).
 
@@ -120,7 +121,7 @@ dofile("/absolute/path/to/herdr-keybindings.lua").setup({
 ## Verify
 
 ```sh
-rex config check      # expect 49 bindings and 1 mode, plus 2 removals with rex_defaults
+rex config check      # expect 50 bindings and 1 mode, plus 2 removals with rex_defaults
 rex config reload
 rex keymap
 ```

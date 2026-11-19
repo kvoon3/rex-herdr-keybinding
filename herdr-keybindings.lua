@@ -49,12 +49,65 @@ local keys = {
   -- additional
   { "space", "pane.go_to" },
   { "shift+space", "client.palette.toggle" },
+  { "]", "rex_lazygit" },
 }
 
 local rex_defaults = {
   "cmd+p",
   "shift+cmd+p",
 }
+
+local function focused_block()
+  local view = rex.session.view{}
+  if type(view) ~= "table" then
+    return nil
+  end
+  for _, window in ipairs(view.windows or {}) do
+    if window.window_id == view.active_window_id then
+      return window.focused_block_id
+    end
+  end
+  return nil
+end
+
+local function current_dir(block_id)
+  local id = block_id or focused_block()
+  if id == nil then
+    return nil
+  end
+
+  local result = rex.block.call("com.superlogical.terminal", "pwd", { block_id = id })
+  if type(result) ~= "table" or type(result.pwd) ~= "string" then
+    return nil
+  end
+
+  local path = result.pwd
+  if path:sub(1, 7) == "file://" then
+    path = path:sub(8)
+    path = path:gsub("%%(%x%x)", function(hex)
+      return string.char(tonumber(hex, 16))
+    end)
+  end
+  return path
+end
+
+local function open_lazygit(ctx)
+  local _, err = rex.session.new_layer{
+    bounds = { 0.04, 0.04, 0.92, 0.92 },
+    focus = true,
+    layout = rex.layout.block{
+      flavor = "com.superlogical.terminal.shell",
+      label = "lazygit",
+      options = {
+        command = { "lazygit" },
+        cwd = current_dir(ctx and ctx.block_id),
+      },
+    },
+  }
+  if err ~= nil then
+    error(err, 0)
+  end
+end
 
 local function unset_keys(unset)
   if unset == nil then
@@ -77,6 +130,14 @@ function M.setup(opts)
   opts = opts or {}
   local prefix = opts.prefix or "ctrl+b"
   local mode = "resize"
+
+  rex.action{
+    name = "rex_lazygit",
+    title = "Open lazygit",
+    category = "Rex",
+    keywords = "git lazygit floating",
+    run = open_lazygit,
+  }
 
   for _, b in ipairs(keys) do
     rex.bind(prefix .. ">" .. b[1], b[2], b[3])
