@@ -1,5 +1,4 @@
--- herdr keybindings for Rex.
--- See README.md for install, and KEYBINDINGS.md for the mapping table.
+-- herdr's ctrl+b keymap for Rex.
 
 local bindings = {
   -- panes

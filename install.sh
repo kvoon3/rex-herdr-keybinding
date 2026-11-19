@@ -32,7 +32,16 @@ awk -v s="$start" -v e="$end" '
   $0 == s { skip = 1; next }
   $0 == e { skip = 0; next }
   skip != 1 { print }
-' "$config" > "$tmp/init.lua"
+' "$config" > "$tmp/stripped.lua"
+
+awk '
+  { line[NR] = $0 }
+  END {
+    last = NR
+    while (last > 0 && line[last] ~ /^[[:space:]]*$/) last--
+    for (i = 1; i <= last; i++) print line[i]
+  }
+' "$tmp/stripped.lua" > "$tmp/init.lua"
 
 {
   printf '\n%s\n' "$start"
