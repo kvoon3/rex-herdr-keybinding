@@ -70,7 +70,7 @@ Reinstalling keeps the prefix already in the file.
 | Tab | `1` to `9` | jump | `client.tab.goto` | ✅ |
 | Tab | `shift+t` | rename | `client.tab.rename` | ✅ |
 | Tab | `shift+x` | close | `client.tab.close` | ✅ |
-| Workspace | `w` | picker | `session.switch` | ✅ |
+| Workspace | `w` | picker | opens session mode (see below) | 🔶 |
 | Workspace | `shift+n` | new | `session.new` | ✅ |
 | Workspace | `shift+w` | rename | `session.rename` | ✅ |
 | Workspace | `shift+d` | close | `session.close` | ✅ |
@@ -85,6 +85,19 @@ Reinstalling keeps the prefix already in the file.
 | Pane | `e` | edit scrollback | none | ❌ |
 | Pane | navigate mode `up` / `down` | move across workspaces | none | ❌ |
 | Global | `ctrl+alt+*` | prefix-free chords | none | ❌ |
+
+### Session mode
+
+`prefix w` enters an exclusive session mode. Press `enter` or `esc` to leave it.
+
+| Key | Action |
+| --- | --- |
+| `up` | `session.previous` |
+| `down` | `session.next` |
+| `c` | `session.new` |
+| `shift+n` | `session.new` |
+| `shift+d` | `session.close` |
+| `shift+w` | `session.rename` |
 
 Adapted keys, in detail:
 
@@ -122,7 +135,7 @@ dofile("/absolute/path/to/herdr-keybindings.lua").setup({
 ## Verify
 
 ```sh
-rex config check      # expect 51 bindings and 1 mode, plus 2 removals with rex_defaults
+rex config check      # expect 59 bindings and 2 modes, plus 2 removals with rex_defaults
 rex config reload
 rex keymap
 ```

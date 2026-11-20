@@ -31,7 +31,6 @@ local keys = {
   { "shift+x", "client.tab.close" },
 
   -- workspace
-  { "w", "session.switch" },
   { "shift+n", "session.new" },
   { "shift+w", "session.rename" },
   { "shift+d", "session.close" },
@@ -160,6 +159,18 @@ function M.setup(opts)
   rex.bind(mode .. "/k", "pane.resize", { direction = "up" })
   rex.bind(mode .. "/l", "pane.resize", { direction = "right" })
   rex.bind(mode .. "/enter", "client.mode.exit")
+
+  local session_mode = "session"
+  rex.mode(session_mode, { exclusive = true })
+  rex.bind(prefix .. ">w", "client.mode.enter", { name = session_mode })
+  rex.bind(session_mode .. "/up", "session.previous")
+  rex.bind(session_mode .. "/down", "session.next")
+  rex.bind(session_mode .. "/c", "session.new")
+  rex.bind(session_mode .. "/shift+n", "session.new")
+  rex.bind(session_mode .. "/shift+d", "session.close")
+  rex.bind(session_mode .. "/shift+w", "session.rename")
+  rex.bind(session_mode .. "/enter", "client.mode.exit")
+  rex.bind(session_mode .. "/escape", "client.mode.exit")
 
   unset_keys(opts.unset)
 end
