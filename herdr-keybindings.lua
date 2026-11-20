@@ -47,8 +47,8 @@ local keys = {
   { "t", "pane.new_floating" },
 
   -- additional
-  { "space", "pane.go_to" },
-  { "shift+space", "client.palette.toggle" },
+  { "f", "pane.go_to" },
+  { "space", "client.palette.toggle" },
   { "]", "rex_lazygit" },
 }
 
