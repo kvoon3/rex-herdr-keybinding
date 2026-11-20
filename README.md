@@ -92,10 +92,10 @@ Reinstalling keeps the prefix already in the file.
 
 | Key | Action |
 | --- | --- |
-| `up` | `session.previous` |
-| `down` | `session.next` |
-| `c` | `session.new` |
-| `shift+n` | `session.new` |
+| `h` `j` `k` `l` | `pane.focus` (move focus; stays in the mode) |
+| `up` / `down` | `session.previous` / `session.next` |
+| `left` / `right` | `client.tab.previous` / `client.tab.next` |
+| `c` / `shift+n` | `session.new` |
 | `shift+d` | `session.close` |
 | `shift+w` | `session.rename` |
 
@@ -135,7 +135,7 @@ dofile("/absolute/path/to/herdr-keybindings.lua").setup({
 ## Verify
 
 ```sh
-rex config check      # expect 59 bindings and 2 modes, plus 2 removals with rex_defaults
+rex config check      # expect 65 bindings and 2 modes, plus 2 removals with rex_defaults
 rex config reload
 rex keymap
 ```
