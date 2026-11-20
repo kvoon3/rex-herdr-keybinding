@@ -71,7 +71,7 @@ dofile("/absolute/path/to/herdr-keybindings.lua").setup({
 ## Verify
 
 ```sh
-rex config check      # expect 65 bindings and 2 modes, plus 2 removals with rex_defaults
+rex config check
 rex config reload
 rex keymap
 ```
