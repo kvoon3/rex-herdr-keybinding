@@ -33,6 +33,7 @@ Environment:
   REX_HERDR_KEYBINDING_REF  Git ref to download the keymap from, default main
 
 Change the prefix in the generated line: setup({ prefix = "ctrl+a" }).
+Installing always adds unset = "rex_defaults" as well.
 ```
 
 ## Keymap
@@ -46,9 +47,14 @@ Default prefix: `ctrl+b`. Change it by editing the `setup` call in `init.lua`:
 dofile("/absolute/path/to/herdr-keybindings.lua").setup({ prefix = "ctrl+a" })
 ```
 
-Reinstalling keeps the prefix already in the file.
+Reinstalling keeps the prefix already in the file and rewrites the rest of the
+call, so the plugin path and `unset` always match the machine that ran it.
 
 ## Unset default keys
+
+`install` writes `unset = "rex_defaults"` into the generated line, so Rex's
+default keys are released on every machine. Edit the line by hand to choose a
+different set; reinstalling puts `rex_defaults` back.
 
 ```lua
 dofile("/absolute/path/to/herdr-keybindings.lua").setup({
